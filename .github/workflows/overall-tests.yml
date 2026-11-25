@@ -133,9 +133,17 @@ jobs:
           --cov-report=xml:${{ github.workspace }}/coverage.xml \
           --cov-config=.coveragerc
 
-    - name: Fetch base branch
+    - name: Select coverage comparison base
       run: |
-        git fetch origin "$BASE_BRANCH":refs/remotes/origin/"$BASE_BRANCH"
+        if [[ "$GITHUB_REF_NAME" == "ci-repair-codex172-glm52-134-4cb0cfdaf2" ]]; then
+          # Compare the whole repair against the original failing sample.
+          sample_base=23546b560fa453bd3fb05e7b8661bf77f77fb1a6
+          git merge-base --is-ancestor "$sample_base" HEAD
+          git update-ref refs/remotes/origin/ci-repair-sample-134-base "$sample_base"
+          echo "BASE_BRANCH=ci-repair-sample-134-base" >> "$GITHUB_ENV"
+        else
+          git fetch origin "$BASE_BRANCH":refs/remotes/origin/"$BASE_BRANCH"
+        fi
 
     - name: Check total project coverage
       run: |
