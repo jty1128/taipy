@@ -15,6 +15,11 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from apispec_webframeworks.flask import FlaskPlugin
 from flask import Blueprint, jsonify, render_template
 
+try:
+    import pkg_resources
+except ImportError:
+    pass
+
 
 class FlaskRestfulPlugin(FlaskPlugin):
     """Small plugin override to handle flask-restful resources"""
