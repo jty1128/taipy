@@ -30,6 +30,11 @@ runs:
         mv tools/packages/pipfiles/Pipfile${{ inputs.python-version }}.max Pipfile
       shell: bash
 
+    - name: Select minimum dependencies for this Python version
+      if: inputs.pipfile-version == 'min' && (inputs.python-version == '3.11' || inputs.python-version == '3.12')
+      run: cp "tools/packages/pipfiles/Pipfile${{ inputs.python-version }}.min" Pipfile
+      shell: bash
+
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}

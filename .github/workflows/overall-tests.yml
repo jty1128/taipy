@@ -39,7 +39,7 @@ jobs:
       matrix:
         python-version: ['3.9', '3.10', '3.11', '3.12']
         os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.python-version == '3.9' && 'ubuntu-24.04' || matrix.os }}
     steps:
     - uses: actions/checkout@v4
 
@@ -57,6 +57,10 @@ jobs:
             - 'taipy/rest/**'
           templates:
             - 'taipy/templates/**'
+
+    - name: Select minimum dependencies for this Python version
+      if: matrix.python-version == '3.11' || matrix.python-version == '3.12'
+      run: cp "tools/packages/pipfiles/Pipfile${{ matrix.python-version }}.min" Pipfile
 
     - uses: actions/setup-python@v5
       with:
@@ -158,7 +162,7 @@ jobs:
         python-version: ['3.9', '3.10', '3.11', '3.12']
         os: [ubuntu-latest]
         pipfile-version: [min, max]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.python-version == '3.9' && 'ubuntu-24.04' || matrix.os }}
     steps:
     - uses: actions/checkout@v4
 
@@ -191,7 +195,7 @@ jobs:
         os: [ubuntu-latest]
         orchestrator: [orchestrator_dispatcher, standalone]
         pipfile-version: [min, max]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.python-version == '3.9' && 'ubuntu-24.04' || matrix.os }}
     steps:
     - uses: actions/checkout@v4
 

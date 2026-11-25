@@ -1,17 +1,17 @@
 import inspect
-from importlib import util
+from typing import TYPE_CHECKING
 
 import pandas
 import pytest
 
-if util.find_spec("playwright"):
-    from playwright._impl._page import Page
+if TYPE_CHECKING:
+    from playwright.sync_api import Page
 
 from taipy.gui import Gui
 
 
 @pytest.mark.teste2e
-def test_has_default_value(page: Page, gui: Gui, helpers):
+def test_has_default_value(page: "Page", gui: Gui, helpers):
     percentages = [
         (1852, 50.83),
         (1856, 45.29),

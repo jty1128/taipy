@@ -11,19 +11,20 @@
 
 import inspect
 import re
-from importlib import util
+from typing import TYPE_CHECKING
 
 import pytest
 
-if util.find_spec("playwright"):
-    from playwright._impl._page import Page
-    from playwright.sync_api import expect
+if TYPE_CHECKING:
+    from playwright.sync_api import Page
 
 from taipy.gui import Gui
 
 
 @pytest.mark.teste2e
 def test_navbar_navigate(page: "Page", gui: Gui, helpers):
+    from playwright.sync_api import expect
+
     gui._set_frame(inspect.currentframe())
     gui.add_page(name="Data", page="<|navbar|id=nav1|> <|Data|id=text-data|>")
     gui.add_page(name="Test", page="<|navbar|id=nav1|> <|Test|id=text-test|>")

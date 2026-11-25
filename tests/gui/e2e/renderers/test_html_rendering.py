@@ -14,12 +14,13 @@ import os
 import time
 from importlib import util
 from pathlib import Path
+from typing import TYPE_CHECKING
 from urllib.request import urlopen
 
 import pytest
 
-if util.find_spec("playwright"):
-    from playwright._impl._page import Page
+if TYPE_CHECKING:
+    from playwright.sync_api import Page
 
 from taipy.gui import Gui, Html
 from taipy.gui.servers.flask import _FlaskServer
